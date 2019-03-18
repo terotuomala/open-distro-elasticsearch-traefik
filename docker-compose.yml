@@ -31,7 +31,7 @@ services:
     networks:
       - odfe-network
     healthcheck:
-      test: ["CMD-SHELL", "curl --silent --fail https://localhost:9200/_cluster/health -u admin:admin --insecure || exit 1"]
+      test: ["CMD-SHELL", "curl --silent -f https://localhost:9200/_cluster/health -u admin:admin --insecure || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -42,7 +42,7 @@ services:
     container_name: kibana
     environment:
       ELASTICSEARCH_URL: https://elasticsearch:9200
-      SERVER_HOST: kibana.localhost
+      SERVER_NAME: kibana.localhost
     networks:
       - traefik-network
       - odfe-network
@@ -50,13 +50,13 @@ services:
       - "traefik.enable=true"
       - "traefik.web.port=5601"
       - "traefik.web.frontend.rule=Host:kibana.localhost"
-      - "traefik.web.backend.healthcheck.path=/"
+      - "traefik.web.backend.healthcheck.path=/api/status"
       - "traefik.web.backend.healthcheck.interval=10s"
     depends_on:
       elasticsearch:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:5601" ]
+      test: [ "CMD-SHELL", "curl --silent -f http://localhost:5601/api/status -u admin:admin || exit 1" ]
       interval: 30s
       timeout: 10s
       retries: 5

@@ -1,6 +1,5 @@
-logLevel = "DEBUG"
+logLevel = "INFO"
 defaultEntryPoints = ["http"]
-debug = true
 
 [entryPoints]
   [entryPoints.http]
