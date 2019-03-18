@@ -16,6 +16,3 @@ http://kibana.localhost/
 http://kibana.localhost:8080/dashboard
 ```
 Kibana uses initial username `admin` and password `admin`
-
-### Example message
-...
